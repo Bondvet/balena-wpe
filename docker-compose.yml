@@ -15,6 +15,10 @@ services:
     restart: always
     build: ./weston
     privileged: true
+    environment:
+      WPE_WESTON_SHELL: kiosk
+      WPE_WESTON_OUTPUT_MAX_WIDTH: 1920
+      WPE_WESTON_OUTPUT_MAX_HEIGHT: 1080
     volumes:
       - 'weston:/run/weston'
 
@@ -22,6 +26,10 @@ services:
     restart: always
     build: ./wpe
     privileged: true
+    environment:
+      WPE_COG_PLATFORM_FDO_VIEW_FULLSCREEN: 1
+      WPE_COG_PLATFORM_FDO_VIEW_HEIGHT: 1080
+      WPE_COG_PLATFORM_FDO_VIEW_WIDTH: 1920
     ports:
       - 8080:8080
       - 12321:12321
@@ -29,3 +37,7 @@ services:
       - 'weston:/run/weston'
       - 'pulse:/run/pulse'
 
+  notify:
+    restart: "on-failure"
+    privileged: true
+    build: ./notify

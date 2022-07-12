@@ -3,7 +3,6 @@
 export WAYLAND_DISPLAY="wayland-0"
 export XDG_RUNTIME_DIR=/run/weston/xdg_runtime
 
-URL=${WPE_URL:-https://wpewebkit.org}
 CPU_SCALING_GOVERNOR=${CPU_SCALING_GOVERNOR:-performance}
 
 WAYLAND_INFO="/usr/bin/waylandeglinfo"
@@ -43,8 +42,29 @@ mkdir -p /run/dbus/
 dbus-launch > /run/dbus/env
 export $(cat /run/dbus/env)
 
+
+# disable touch screen
+export WPE_BCMRPI_TOUCH=0
+
+# mount the token folder, if we're on balena
+if [ "$BALENA" == "1" ]; then
+  mkdir -p /mnt/data
+  mount /dev/mmcblk0p6 /mnt/data
+fi
+
+# read the refresh token file
+if [[ $REFRESH_TOKEN_FILE ]]; then
+  if [[ -f "$REFRESH_TOKEN_FILE" ]]; then
+    export REFRESH_TOKEN=`cat $REFRESH_TOKEN_FILE`
+  fi
+fi
+
+if [[ $REFRESH_TOKEN ]]; then
+    export WPE_URL="$WPE_URL?token=$REFRESH_TOKEN"
+fi
+
 # Start browser
-cog-fdo ${URL}
+cog-fdo "file:///var/lib/public_html/index.html?url=${WPE_URL}"
 
 # Start Tohora
 ./tohora 8080 "cog-open"
