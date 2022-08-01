@@ -1,15 +1,9 @@
 version: '2'
 
 volumes:
-    pulse:                          # Required for PA over UNIX socket
     weston:
 
 services:
-  audio:
-    image: balenablocks/audio
-    privileged: true
-    volumes:
-      - 'pulse:/run/pulse'
 
   weston:
     restart: always
@@ -35,7 +29,6 @@ services:
       - 12321:12321
     volumes:
       - 'weston:/run/weston'
-      - 'pulse:/run/pulse'
 
   notify:
     restart: "on-failure"
