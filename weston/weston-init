@@ -34,14 +34,12 @@ WPE_WESTON_OUTPUT_TRANSFORM=${WPE_WESTON_OUTPUT_TRANSFORM:-""}
 
 echo "WPE_WESTON_OUTPUT_MAX_WIDTH=${WPE_WESTON_OUTPUT_MAX_WIDTH}"
 echo "WPE_WESTON_OUTPUT_MAX_HEIGHT=${WPE_WESTON_OUTPUT_MAX_HEIGHT}"
-echo "WPE_WESTON_OUTPUT_TRANSFORM=${WPE_WESTON_OUTPUT_MAX_WIDTH}"
+echo "WPE_WESTON_OUTPUT_TRANSFORM=${WPE_WESTON_OUTPUT_TRANSFORM}"
+
+transformLine=""
 
 if [ "$WPE_WESTON_OUTPUT_TRANSFORM" != "" ] ; then
-    cat << IEOF >> /weston.ini
-
-[output]
-transform=${WPE_WESTON_OUTPUT_TRANSFORM}
-IEOF
+    transformLine="transform=${WPE_WESTON_OUTPUT_TRANSFORM}"
 fi
 
 is_in_range() {
@@ -94,9 +92,19 @@ if [ "$WPE_WESTON_OUTPUT_MAX_WIDTH" -gt 0 -o "$WPE_WESTON_OUTPUT_MAX_HEIGHT" -gt
 [output]
 name=${outn}
 mode=${foundres}
+${transformLine}
 IEOF
         fi
     done
+fi
+
+if [ "${transformLine}" != "" ] ; then
+    cat << IEOF >> /weston.ini
+
+[output]
+name=HDMI-A-1
+${transformLine}
+IEOF
 fi
 
 # Set the backlight brightness of a Raspberry touchscreen
