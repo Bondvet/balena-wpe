@@ -92,6 +92,7 @@ if [ "$WPE_WESTON_OUTPUT_MAX_WIDTH" -gt 0 -o "$WPE_WESTON_OUTPUT_MAX_HEIGHT" -gt
 [output]
 name=${outn}
 mode=${foundres}
+${transformLine}
 IEOF
         fi
     done
