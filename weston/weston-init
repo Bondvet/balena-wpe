@@ -40,7 +40,7 @@ is_in_range() {
 if [ "$WPE_WESTON_OUTPUT_MAX_WIDTH" -gt 0 -o "$WPE_WESTON_OUTPUT_MAX_HEIGHT" -gt 0 -o "$WPE_WESTON_OUTPUT_TRANSFORM" != "" ]; then
 
     transformLine=""
-    if [ "$WPE_WESTON_OUTPUT_TRANSFORM" -ne "" ] ; then
+    if [ "$WPE_WESTON_OUTPUT_TRANSFORM" != "" ] ; then
         transformLine="transform=$WPE_WESTON_OUTPUT_TRANSFORM"
     fi
 
