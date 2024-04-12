@@ -51,5 +51,3 @@ data:
   defaultDeviceType: raspberrypi4-64
   supportedDeviceTypes:
     - raspberrypi4-64
-    - raspberrypi3
-    - raspberrypi3-64

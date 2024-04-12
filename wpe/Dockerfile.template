@@ -1,3 +1,11 @@
+FROM alpine as tohora
+RUN apk update && apk add ca-certificates
+
+ENV TOHORA_VERSION=0.3.2
+RUN wget -O /tohora.tgz \
+    "https://github.com/mozz100/tohora/releases/download/v${TOHORA_VERSION}/tohora_${TOHORA_VERSION}_Linux_armv5.tar.gz"
+
+
 FROM igalia/balena-browser-wpe:%%BALENA_MACHINE_NAME%%-bfc4eb6
 
 COPY wpe-init /wpe-init
@@ -13,9 +21,6 @@ COPY public_html /var/lib/public_html
 
 CMD [ "/wpe-init" ]
 
-ENV TOHORA_VERSION=0.3.2
-RUN wget -O tohora.tgz \
-    "https://github.com/mozz100/tohora/releases/download/v"$TOHORA_VERSION"/tohora_"$TOHORA_VERSION"_Linux_armv5.tar.gz" \
-    && tar xzf tohora.tgz \
+COPY --from=tohora /tohora.tgz ./tohora.tgz
+RUN tar xzf tohora.tgz \
     && rm tohora.tgz
-
